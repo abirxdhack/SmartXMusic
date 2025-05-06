@@ -98,7 +98,7 @@ COMMAND_PREFIXES = [".", ",", "/", "!"]
 
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
-    "https://github.com/benjamincudna2442/SmartXMusic",
+    "https://github.com/Afcisufhsoufh/SmartXMusic",
 )
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "master")
 GIT_TOKEN = getenv(
