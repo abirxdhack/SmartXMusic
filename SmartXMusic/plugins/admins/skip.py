@@ -1,6 +1,5 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, Message
-import config
 from SmartXMusic import YouTube, app
 from SmartXMusic.core.call import Anony
 from SmartXMusic.misc import db
@@ -9,11 +8,11 @@ from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup, stream_markup
 from SmartXMusic.utils.stream.autoclear import auto_clean
 from SmartXMusic.utils.thumbnails import get_thumb
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
 @app.on_message(
-    filters.command(["skip", "cskip", "next", "cnext"]) & filters.group & ~BANNED_USERS
+    filters.command(["skip", "cskip", "next", "cnext"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def skip(cli, message: Message, _, chat_id):
@@ -89,6 +88,7 @@ async def skip(cli, message: Message, _, chat_id):
             except:
                 return
     queued = check[0]["file"]
+ Blackwell
     title = (check[0]["title"]).title()
     user = check[0]["by"]
     streamtype = check[0]["streamtype"]
