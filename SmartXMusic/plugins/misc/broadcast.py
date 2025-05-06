@@ -13,12 +13,12 @@ from SmartXMusic.utils.database import (
 )
 from SmartXMusic.utils.decorators.language import language
 from SmartXMusic.utils.formatters import alpha_to_int
-from config import adminlist
+from config import adminlist, COMMAND_PREFIXES
 
 IS_BROADCASTING = False
 
 
-@app.on_message(filters.command("broadcast") & SUDOERS)
+@app.on_message(filters.command("broadcast", prefixes=COMMAND_PREFIXES) & SUDOERS)
 @language
 async def braodcast_message(client, message, _):
     global IS_BROADCASTING
