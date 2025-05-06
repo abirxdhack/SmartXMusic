@@ -1,5 +1,6 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, Message
+import config
 from SmartXMusic import YouTube, app
 from SmartXMusic.core.call import Anony
 from SmartXMusic.misc import db
@@ -11,8 +12,12 @@ from SmartXMusic.utils.thumbnails import get_thumb
 from config import BANNED_USERS, COMMAND_PREFIXES
 
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
 @app.on_message(
-    filters.command(["skip", "cskip", "next", "cnext"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS
+    multi_prefix_filter(["skip", "cskip", "next", "cnext"]) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def skip(cli, message: Message, _, chat_id):
