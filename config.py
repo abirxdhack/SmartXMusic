@@ -94,7 +94,7 @@ def time_to_seconds(time):
 
 DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 
-COMMAND_PREFIXES = [".", ",", "/", "!"]
+COMMAND_PREFIXES = [".", ",", "/", "!", "#"]
 
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
