@@ -5,11 +5,11 @@ from SmartXMusic.core.call import Anony
 from SmartXMusic.utils.database import set_loop
 from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
 @app.on_message(
-    filters.command(["end", "stop", "cend", "cstop"]) & filters.group & ~BANNED_USERS
+    filters.command(["end", "stop", "cend", "cstop"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def stop_music(cli, message: Message, _, chat_id):
