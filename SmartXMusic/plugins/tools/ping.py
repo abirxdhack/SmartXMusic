@@ -6,10 +6,12 @@ from SmartXMusic.core.call import Anony
 from SmartXMusic.utils import bot_sys_stats
 from SmartXMusic.utils.decorators.language import language
 from SmartXMusic.utils.inline import supp_markup
-from config import BANNED_USERS, PING_IMG_URL
+from config import BANNED_USERS, PING_IMG_URL, COMMAND_PREFIXES
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command(["ping", "alive"]) & ~BANNED_USERS)
+@app.on_message(multi_prefix_filter(["ping", "alive"]) & ~BANNED_USERS)
 @language
 async def ping_com(client, message: Message, _):
     start = datetime.now()
