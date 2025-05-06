@@ -93,7 +93,6 @@ async def skip(cli, message: Message, _, chat_id):
             except:
                 return
     queued = check[0]["file"]
- Blackwell
     title = (check[0]["title"]).title()
     user = check[0]["by"]
     streamtype = check[0]["streamtype"]
