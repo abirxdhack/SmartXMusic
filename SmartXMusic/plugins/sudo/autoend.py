@@ -3,9 +3,10 @@ from pyrogram.types import Message
 from SmartXMusic import app
 from SmartXMusic.misc import SUDOERS
 from SmartXMusic.utils.database import autoend_off, autoend_on
+from config import COMMAND_PREFIXES
 
 
-@app.on_message(filters.command("autoend") & SUDOERS)
+@app.on_message(filters.command("autoend", prefixes=COMMAND_PREFIXES) & SUDOERS)
 async def auto_end_stream(_, message: Message):
     usage = "<b>ᴇxᴀᴍᴘʟᴇ :</b>\n\n/autoend [ᴇɴᴀʙʟᴇ | ᴅɪsᴀʙʟᴇ]"
     if len(message.command) != 2:
