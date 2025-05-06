@@ -17,6 +17,7 @@ from SmartXMusic.utils.database import (
 )
 from SmartXMusic.utils.decorators.language import language
 from SmartXMusic.utils.pastebin import AnonyBin
+from config import COMMAND_PREFIXES
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -25,7 +26,11 @@ async def is_heroku():
     return "heroku" in socket.getfqdn()
 
 
-@app.on_message(filters.command(["getlog", "logs", "getlogs"]) & SUDOERS)
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
+@app.on_message(multi_prefix_filter(["getlog", "logs", "getlogs"]) & SUDOERS)
 @language
 async def log_(client, message, _):
     try:
@@ -34,7 +39,7 @@ async def log_(client, message, _):
         await message.reply_text(_["server_1"])
 
 
-@app.on_message(filters.command(["update", "gitpull"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["update", "gitpull"]) & SUDOERS)
 @language
 async def update_(client, message, _):
     if await is_heroku():
@@ -108,7 +113,7 @@ async def update_(client, message, _):
         exit()
 
 
-@app.on_message(filters.command(["restart"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["restart"]) & SUDOERS)
 async def restart_(_, message):
     response = await message.reply_text("ʀᴇsᴛᴀʀᴛɪɴɢ...")
     ac_chats = await get_active_chats()
