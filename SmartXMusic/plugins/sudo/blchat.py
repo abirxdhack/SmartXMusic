@@ -27,8 +27,7 @@ async def blacklist_chat_func(client, message: Message, _):
 
 
 @app.on_message(
-    filters.command(["whitelistchat", "unblacklistchat", "unblchat"], prefixes=COMMAND_PREFIXES) &  
-    & SUDOERS
+    filters.command(["whitelistchat", "unblacklistchat", "unblchat"], prefixes=COMMAND_PREFIXES) & SUDOERS
 )
 @language
 async def white_funciton(client, message: Message, _):
