@@ -4,10 +4,12 @@ from SmartXMusic import app
 from SmartXMusic.utils.database import get_loop, set_loop
 from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
+# Define command filters with multiple prefixes
+command_filters = filters.command(["loop", "cloop"], prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command(["loop", "cloop"]) & filters.group & ~BANNED_USERS)
+@app.on_message(command_filters & filters.group & ~BANNED_USERS)
 @AdminRightsCheck
 async def admins(cli, message: Message, _, chat_id):
     usage = _["admin_17"]
