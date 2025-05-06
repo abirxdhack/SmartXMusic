@@ -5,10 +5,10 @@ from SmartXMusic.core.call import Anony
 from SmartXMusic.utils.database import is_music_playing, music_off
 from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
-@app.on_message(filters.command(["pause", "cpause"]) & filters.group & ~BANNED_USERS)
+@app.on_message(filters.command(["pause", "cpause"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS)
 @AdminRightsCheck
 async def pause_admin(cli, message: Message, _, chat_id):
     if not await is_music_playing(chat_id):
