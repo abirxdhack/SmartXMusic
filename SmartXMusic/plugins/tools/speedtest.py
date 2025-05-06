@@ -5,6 +5,7 @@ from pyrogram.types import Message
 from SmartXMusic import app
 from SmartXMusic.misc import SUDOERS
 from SmartXMusic.utils.decorators.language import language
+from config import COMMAND_PREFIXES
 
 
 def testspeed(m, _):
@@ -23,7 +24,11 @@ def testspeed(m, _):
     return result
 
 
-@app.on_message(filters.command(["speedtest", "spt"]) & SUDOERS)
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
+@app.on_message(multi_prefix_filter(["speedtest", "spt"]) & SUDOERS)
 @language
 async def speedtest_function(client, message: Message, _):
     m = await message.reply_text(_["server_11"])
