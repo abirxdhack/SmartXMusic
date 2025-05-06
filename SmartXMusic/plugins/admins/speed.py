@@ -7,13 +7,13 @@ from SmartXMusic.utils import AdminRightsCheck
 from SmartXMusic.utils.database import is_active_chat, is_nonadmin_chat
 from SmartXMusic.utils.decorators.language import languageCB
 from SmartXMusic.utils.inline import close_markup, speed_markup
-from config import BANNED_USERS, adminlist
+from config import BANNED_USERS, COMMAND_PREFIXES, adminlist
 
 checker = []
 
 
 @app.on_message(
-    filters.command(["cspeed", "speed", "cslow", "slow", "playback", "cplayback"])
+    filters.command(["cspeed", "speed", "cslow", "slow", "playback", "cplayback"], prefixes=COMMAND_PREFIXES)
     & filters.group
     & ~BANNED_USERS
 )
