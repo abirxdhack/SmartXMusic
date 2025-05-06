@@ -4,7 +4,7 @@ from pyrogram.types import InlineKeyboardButton, Message
 from SmartXMusic import app
 from SmartXMusic.utils.database import get_lang, set_lang
 from SmartXMusic.utils.decorators import ActualAdminCB, language, languageCB
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 from strings import get_string, languages_present
 
 
@@ -31,7 +31,11 @@ def lanuages_keyboard(_):
     return keyboard
 
 
-@app.on_message(filters.command(["lang", "setlang", "language"]) & ~BANNED_USERS)
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
+@app.on_message(multi_prefix_filter(["lang", "setlang", "language"]) & ~BANNED_USERS)
 @language
 async def langs_command(client, message: Message, _):
     keyboard = lanuages_keyboard(_)
