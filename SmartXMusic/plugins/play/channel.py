@@ -4,10 +4,10 @@ from pyrogram.types import Message
 from SmartXMusic import app
 from SmartXMusic.utils.database import set_cmode
 from SmartXMusic.utils.decorators.admins import AdminActual
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
-@app.on_message(filters.command(["channelplay"]) & filters.group & ~BANNED_USERS)
+@app.on_message(filters.command(["channelplay"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS)
 @AdminActual
 async def playmode_(client, message: Message, _):
     if len(message.command) < 2:
