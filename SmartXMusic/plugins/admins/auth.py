@@ -10,15 +10,26 @@ from SmartXMusic.utils.database import (
 )
 from SmartXMusic.utils.decorators import AdminActual, language
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS, adminlist
+from config import BANNED_USERS, adminlist, COMMAND_PREFIXES
 
+# Define command filters with multiple prefixes
+command_filters = filters.command(["auth", "unauth", "authlist", "authusers"], prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command("auth") & filters.group & ~BANNED_USERS)
-@AdminActual
+@app.on_message(command_filters & filters.group & ~BANNED_USERS)
+@language
+async def handle_commands(client, message: Message, _):
+    command = message.command[0].lower()
+
+    if command == "auth":
+        return await auth(client, message, _)
+    elif command == "unauth":
+        return await unauthusers(client, message, _)
+    elif command in ["authlist", "authusers"]:
+        return await authusers(client, message, _)
+
 async def auth(client, message: Message, _):
-    if not message.reply_to_message:
-        if len(message.command) != 2:
-            return await message.reply_text(_["general_1"])
+    if not message.reply_to_message and len(message.command) != 2:
+        return await message.reply_text(_["general_1"])
     user = await extract_user(message)
     token = await int_to_alpha(user.id)
     _check = await get_authuser_names(message.chat.id)
@@ -41,13 +52,9 @@ async def auth(client, message: Message, _):
     else:
         return await message.reply_text(_["auth_3"].format(user.mention))
 
-
-@app.on_message(filters.command("unauth") & filters.group & ~BANNED_USERS)
-@AdminActual
 async def unauthusers(client, message: Message, _):
-    if not message.reply_to_message:
-        if len(message.command) != 2:
-            return await message.reply_text(_["general_1"])
+    if not message.reply_to_message and len(message.command) != 2:
+        return await message.reply_text(_["general_1"])
     user = await extract_user(message)
     token = await int_to_alpha(user.id)
     deleted = await delete_authuser(message.chat.id, token)
@@ -60,11 +67,6 @@ async def unauthusers(client, message: Message, _):
     else:
         return await message.reply_text(_["auth_5"].format(user.mention))
 
-
-@app.on_message(
-    filters.command(["authlist", "authusers"]) & filters.group & ~BANNED_USERS
-)
-@language
 async def authusers(client, message: Message, _):
     _wtf = await get_authuser_names(message.chat.id)
     if not _wtf:

@@ -9,8 +9,7 @@ from time import time
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from SmartXMusic import app
-from config import OWNER_ID
-
+from config import OWNER_ID, COMMAND_PREFIXES
 
 async def aexec(code, client, message):
     exec(
@@ -26,14 +25,18 @@ async def edit_or_reply(msg: Message, **kwargs):
     await func(**{k: v for k, v in kwargs.items() if k in spec})
 
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
 @app.on_edited_message(
-    filters.command("eval")
+    multi_prefix_filter(["eval"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
 @app.on_message(
-    filters.command("eval")
+    multi_prefix_filter(["eval"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
@@ -137,13 +140,13 @@ async def forceclose_command(_, CallbackQuery):
 
 
 @app.on_edited_message(
-    filters.command("sh")
+    multi_prefix_filter(["sh"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
 @app.on_message(
-    filters.command("sh")
+    multi_prefix_filter(["sh"])
     & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot

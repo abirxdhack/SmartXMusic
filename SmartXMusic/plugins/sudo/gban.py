@@ -15,10 +15,12 @@ from SmartXMusic.utils.database import (
 )
 from SmartXMusic.utils.decorators.language import language
 from SmartXMusic.utils.extraction import extract_user
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command(["gban", "globalban"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["gban", "globalban"]) & SUDOERS)
 @language
 async def global_ban(client, message: Message, _):
     if not message.reply_to_message:
@@ -66,7 +68,7 @@ async def global_ban(client, message: Message, _):
     await mystic.delete()
 
 
-@app.on_message(filters.command(["ungban"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["ungban"]) & SUDOERS)
 @language
 async def global_un(client, message: Message, _):
     if not message.reply_to_message:
@@ -98,7 +100,7 @@ async def global_un(client, message: Message, _):
     await mystic.delete()
 
 
-@app.on_message(filters.command(["gbannedusers", "gbanlist"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["gbannedusers", "gbanlist"]) & SUDOERS)
 @language
 async def gbanned_list(client, message: Message, _):
     counts = await get_banned_count()

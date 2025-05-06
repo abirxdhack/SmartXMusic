@@ -9,11 +9,15 @@ from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup, stream_markup
 from SmartXMusic.utils.stream.autoclear import auto_clean
 from SmartXMusic.utils.thumbnails import get_thumb
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
+
+
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
 
 @app.on_message(
-    filters.command(["skip", "cskip", "next", "cnext"]) & filters.group & ~BANNED_USERS
+    multi_prefix_filter(["skip", "cskip", "next", "cnext"]) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def skip(cli, message: Message, _, chat_id):

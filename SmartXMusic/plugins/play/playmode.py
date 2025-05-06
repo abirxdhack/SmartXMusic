@@ -4,10 +4,10 @@ from SmartXMusic import app
 from SmartXMusic.utils.database import get_playmode, get_playtype, is_nonadmin_chat
 from SmartXMusic.utils.decorators import language
 from SmartXMusic.utils.inline.settings import playmode_users_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
-@app.on_message(filters.command(["playmode", "mode"]) & filters.group & ~BANNED_USERS)
+@app.on_message(filters.command(["playmode", "mode"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS)
 @language
 async def playmode_(client, message: Message, _):
     playmode = await get_playmode(message.chat.id)

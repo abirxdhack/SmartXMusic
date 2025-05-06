@@ -9,13 +9,15 @@ from SmartXMusic.misc import db
 from SmartXMusic.utils.database import get_assistant, get_authuser_names, get_cmode
 from SmartXMusic.utils.decorators import ActualAdminCB, AdminActual, language
 from SmartXMusic.utils.formatters import alpha_to_int, get_readable_time
-from config import BANNED_USERS, adminlist, lyrical
+from config import BANNED_USERS, adminlist, lyrical, COMMAND_PREFIXES
 
 rel = {}
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
 @app.on_message(
-    filters.command(["admincache", "reload", "refresh"]) & filters.group & ~BANNED_USERS
+    multi_prefix_filter(["admincache", "reload", "refresh"]) & filters.group & ~BANNED_USERS
 )
 @language
 async def reload_admin_cache(client, message: Message, _):
@@ -44,7 +46,7 @@ async def reload_admin_cache(client, message: Message, _):
         await message.reply_text(_["reload_3"])
 
 
-@app.on_message(filters.command(["reboot"]) & filters.group & ~BANNED_USERS)
+@app.on_message(multi_prefix_filter(["reboot"]) & filters.group & ~BANNED_USERS)
 @AdminActual
 async def restartbot(client, message: Message, _):
     mystic = await message.reply_text(_["reload_4"].format(app.mention))

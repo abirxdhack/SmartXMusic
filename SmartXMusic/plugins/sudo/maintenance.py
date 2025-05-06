@@ -9,9 +9,12 @@ from SmartXMusic.utils.database import (
     maintenance_on,
 )
 from strings import get_string
+from config import COMMAND_PREFIXES
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command(["maintenance"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["maintenance"]) & SUDOERS)
 async def maintenance(client, message: Message):
     try:
         language = await get_lang(message.chat.id)

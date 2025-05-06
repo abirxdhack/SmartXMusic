@@ -6,11 +6,11 @@ from SmartXMusic.utils import help_pannel
 from SmartXMusic.utils.database import get_lang
 from SmartXMusic.utils.decorators.language import LanguageStart, languageCB
 from SmartXMusic.utils.inline.help import help_back_markup, private_help_panel
-from config import BANNED_USERS, START_IMG_URL, SUPPORT_CHAT
+from config import BANNED_USERS, START_IMG_URL, SUPPORT_CHAT, COMMAND_PREFIXES
 from strings import get_string, helpers
 
 
-@app.on_message(filters.command(["help"]) & filters.private & ~BANNED_USERS)
+@app.on_message(filters.command(["help"], prefixes=COMMAND_PREFIXES) & filters.private & ~BANNED_USERS)
 @app.on_callback_query(filters.regex("settings_back_helper") & ~BANNED_USERS)
 async def helper_private(
     client: app, update: Union[types.Message, types.CallbackQuery]
@@ -43,7 +43,7 @@ async def helper_private(
         )
 
 
-@app.on_message(filters.command(["help"]) & filters.group & ~BANNED_USERS)
+@app.on_message(filters.command(["help"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def help_com_group(client, message: Message, _):
     keyboard = private_help_panel(_)

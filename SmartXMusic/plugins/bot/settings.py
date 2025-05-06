@@ -33,11 +33,11 @@ from SmartXMusic.utils.inline.settings import (
     vote_mode_markup,
 )
 from SmartXMusic.utils.inline.start import private_panel
-from config import BANNED_USERS, OWNER_ID
+from config import BANNED_USERS, OWNER_ID, COMMAND_PREFIXES
 
 
 @app.on_message(
-    filters.command(["settings", "setting"]) & filters.group & ~BANNED_USERS
+    filters.command(["settings", "setting"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS
 )
 @language
 async def settings_mar(client, message: Message, _):

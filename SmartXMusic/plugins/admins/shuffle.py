@@ -5,11 +5,11 @@ from SmartXMusic import app
 from SmartXMusic.misc import db
 from SmartXMusic.utils.decorators import AdminRightsCheck
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
 @app.on_message(
-    filters.command(["shuffle", "cshuffle"]) & filters.group & ~BANNED_USERS
+    filters.command(["shuffle", "cshuffle"], prefixes=COMMAND_PREFIXES) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def admins(Client, message: Message, _, chat_id):

@@ -14,10 +14,14 @@ from SmartXMusic.plugins import ALL_MODULES
 from SmartXMusic.utils.database import get_served_chats, get_served_users, get_sudoers
 from SmartXMusic.utils.decorators.language import language, languageCB
 from SmartXMusic.utils.inline.stats import back_stats_buttons, stats_buttons
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
-@app.on_message(filters.command(["stats", "gstats"]) & filters.group & ~BANNED_USERS)
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
+@app.on_message(multi_prefix_filter(["stats", "gstats"]) & filters.group & ~BANNED_USERS)
 @language
 async def stats_global(client, message: Message, _):
     upl = stats_buttons(_, True if message.from_user.id in SUDOERS else False)

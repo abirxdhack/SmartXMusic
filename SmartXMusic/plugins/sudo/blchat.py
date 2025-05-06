@@ -4,10 +4,10 @@ from SmartXMusic import app
 from SmartXMusic.misc import SUDOERS
 from SmartXMusic.utils.database import blacklist_chat, blacklisted_chats, whitelist_chat
 from SmartXMusic.utils.decorators.language import language
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
-@app.on_message(filters.command(["blchat", "blacklistchat"]) & SUDOERS)
+@app.on_message(filters.command(["blchat", "blacklistchat"], prefixes=COMMAND_PREFIXES) & SUDOERS)
 @language
 async def blacklist_chat_func(client, message: Message, _):
     if len(message.command) != 2:
@@ -27,7 +27,7 @@ async def blacklist_chat_func(client, message: Message, _):
 
 
 @app.on_message(
-    filters.command(["whitelistchat", "unblacklistchat", "unblchat"]) & SUDOERS
+    filters.command(["whitelistchat", "unblacklistchat", "unblchat"], prefixes=COMMAND_PREFIXES) & SUDOERS
 )
 @language
 async def white_funciton(client, message: Message, _):
@@ -42,7 +42,7 @@ async def white_funciton(client, message: Message, _):
     await message.reply_text(_["black_9"])
 
 
-@app.on_message(filters.command(["blchats", "blacklistedchats"]) & ~BANNED_USERS)
+@app.on_message(filters.command(["blchats", "blacklistedchats"], prefixes=COMMAND_PREFIXES) & ~BANNED_USERS)
 @language
 async def all_chats(client, message: Message, _):
     text = _["black_7"]

@@ -3,9 +3,12 @@ from SmartXMusic import app
 from SmartXMusic.misc import SUDOERS
 from SmartXMusic.utils.database import add_off, add_on
 from SmartXMusic.utils.decorators.language import language
+from config import COMMAND_PREFIXES
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
 
-@app.on_message(filters.command(["logger"]) & SUDOERS)
+@app.on_message(multi_prefix_filter(["logger"]) & SUDOERS)
 @language
 async def logger(client, message, _):
     usage = _["log_1"]
