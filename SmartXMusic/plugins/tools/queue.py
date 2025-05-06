@@ -10,7 +10,7 @@ from SmartXMusic.utils import AnonyBin, get_channeplayCB, seconds_to_min
 from SmartXMusic.utils.database import get_cmode, is_active_chat, is_music_playing
 from SmartXMusic.utils.decorators.language import language, languageCB
 from SmartXMusic.utils.inline import queue_back_markup, queue_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 basic = {}
 
@@ -33,8 +33,12 @@ def get_duration(playing):
         return "Inline"
 
 
+# Create a filter for commands with multiple prefixes
+multi_prefix_filter = lambda commands: filters.command(commands, prefixes=COMMAND_PREFIXES)
+
+
 @app.on_message(
-    filters.command(["queue", "cqueue", "player", "cplayer", "playing", "cplaying"])
+    multi_prefix_filter(["queue", "cqueue", "player", "cplayer", "playing", "cplaying"])
     & filters.group
     & ~BANNED_USERS
 )
