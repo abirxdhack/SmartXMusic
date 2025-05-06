@@ -5,11 +5,11 @@ from SmartXMusic.core.call import Anony
 from SmartXMusic.misc import db
 from SmartXMusic.utils import AdminRightsCheck, seconds_to_min
 from SmartXMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import BANNED_USERS, COMMAND_PREFIXES
 
 
 @app.on_message(
-    filters.command(["seek", "cseek", "seekback", "cseekback"])
+    filters.command(["seek", "cseek", "seekback", "cseekback"], prefixes=COMMAND_PREFIXES)
     & filters.group
     & ~BANNED_USERS
 )
